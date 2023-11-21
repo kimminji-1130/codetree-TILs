@@ -1,29 +1,23 @@
-import java.util.*;
-public class Main {
-    public static void main(String[] args) {
-        // 여기에 코드를 작성해주세요.
-        Scanner sc = new Scanner(System.in);
-        int a = sc.nextInt();
-        int[] b = new int[a+1];
-        int[] be = new int[a+1];
-        for(int i=0;i<a;i++){
-            b[i]=sc.nextInt();
-        }
-        int sum=0;
-        int num=0;
-        for(int i=0;i<a;i++){
-            if(b[i]<b[i+1]){
-                sum++;
-                if(b[i]>b[i+1]) sum=0;
-            }
-        }
-        for(int i=0;i<a;i++){
-         if(b[i]>b[i+1]){
-                num++;
-                if(b[i]<b[i+1]) num=0;
-            }
-        }
-        if(sum>num) System.out.print(sum);
-        else if(num>sum) System.out.print(num);
-    }
+import java.util.Scanner;
+public class Main{
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		int N=sc.nextInt();
+
+		int[] Na=new int[N];
+		int cnt=0;
+		int MAX=0;
+		for(int i=0;i<N;i++){
+			Na[i]=sc.nextInt();
+			if(i==0||Na[i]>Na[i-1])
+				cnt++;
+			else
+				cnt=1;
+			if(cnt>MAX)
+				MAX=cnt;
+		}
+
+		System.out.print(MAX);				
+	}
 }
