@@ -1,37 +1,65 @@
 import java.util.Scanner;
 
 public class Main {
+    public static final int MAX_N = 10;
+    
     public static int n;
-    public static int a, b, c;
-    public static int a2, b2, c2;
+    public static int[] a = new int[MAX_N];
+    public static int[] b = new int[MAX_N];
+    public static int[] c = new int[MAX_N];
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         // 입력
         n = sc.nextInt();
-        a = sc.nextInt();
-        b = sc.nextInt();
-        c = sc.nextInt();
-        a2 = sc.nextInt();
-        b2 = sc.nextInt();
-        c2 = sc.nextInt();
+        for(int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+            b[i] = sc.nextInt();
+            c[i] = sc.nextInt();
+        }
         
-        // 모든 조합을 다 만들어 봅니다.
+        // 모든 숫자를 다 만들어 봅니다. (백의 자리수가 i, 십의 자리수가 j, 일의 자리수가 k)
         int cnt = 0;
-        for(int i = 1; i <= n; i++)
-            for(int j = 1; j <= n; j++)
-                for(int k = 1; k <= n; k++) {
-                    // 모든 자리가 주어진 첫 조합과의 거리가 2 이내인지 확인합니다.
-                    if((Math.abs(a - i) <= 2 || Math.abs(a - i) >= n - 2) && (Math.abs(b - j) <= 2 || Math.abs(b - j) >= n - 2) && 
-                       (Math.abs(c - k) <= 2 || Math.abs(c - k) >= n - 2))
-                        cnt++;
+        for(int i = 1; i <= 9; i++)
+            for(int j = 1; j <= 9; j++)
+                for(int k = 1; k <= 9; k++) {
+                    // 같은 수가 있는지 확인합니다.
+                    if(i == j || j == k || k == i)
+                        continue;
                     
-                    // 모든 자리가 주어진 두번째 조합과의 거리가 2 이내인지 확인합니다.
-                    else if((Math.abs(a2 - i) <= 2 || Math.abs(a2 - i) >= n - 2) && (Math.abs(b2 - j) <= 2 || Math.abs(b2 - j) >= n - 2) && 
-                       (Math.abs(c2 - k) <= 2 || Math.abs(c2 - k) >= n - 2))
-                        cnt++;
+                    // 해당 숫자가 정답일때, 모든 입력에 대해 올바른 답이 나왔는지 확인합니다.
+                    boolean successed = true;
+                    for(int q = 0; q < n; q++) {
+                        // x : a[q]의 백의 자릿수, y : 십의 자릿수, z : 일의 자릿수
+                        int x = a[q] / 100;
+                        int y = a[q] / 10 % 10;
+                        int z = a[q] % 10;
+                        // cnt1 : 1번 카운트, cnt2 : 2번 카운트
+                        int cnt1 = 0, cnt2 = 0;
+                        if(x == i)
+                            cnt1++;
+                        if(y == j)
+                            cnt1++;
+                        if(z == k)
+                            cnt1++;
+                        if(x == j || x == k)
+                            cnt2++;
+                        if(y == i || y == k)
+                            cnt2++;
+                        if(z == i || z == j)
+                            cnt2++;
+                        
+                        // 만약 카운트 수가 다르다면 해당 숫자는 정답이 될 수 없습니다.
+                        if(cnt1 != b[q] || cnt2 != c[q]) {
+                            successed = false;
+                            break;
+                        }
+                    }
+                    
+                    if(successed) cnt++;
                 }
         
         System.out.print(cnt);
+        
     }
 }
